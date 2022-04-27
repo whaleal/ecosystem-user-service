@@ -24,64 +24,108 @@ public class User extends BaseUser implements UserDetails {
 
     private static final long serialVersionUID = 3592549577903104696L;
 
+    /**
+     * 名字 所允许的特殊字符：@'/&#,.- ，长度为1-50
+     */
     @Pattern(regexp = "^[A-Za-z0-9 '/&#,.-]*$", message = "The only special characters allowed are: +@'/&#,.-")
     @NotBlank(message = "Please provide a first name")
     @Size(max = 50, message = "Please enter a first name between 1 and 50 characters")
     private String firstName;
 
+    /**
+     * 姓氏 所允许的特殊字符：@'/&#,.- ，长度为1-50
+     */
     @Pattern(regexp = "^[A-Za-z0-9 '/&#,.-]*$", message = "The only special characters allowed are: +@'/&#,.-")
     @NotBlank(message = "Please provide a last name")
     @Size(max = 50, message = "Please enter a last name between 1 and 50 characters")
     private String lastName;
 
+    /**
+     * 街道地址 所允许的特殊字符：@'/&#,.- ，长度为1-80
+     */
     @Pattern(regexp = "^[A-Za-z0-9 '/&#,.-]*$", message = "The only special characters allowed are: +@'/&#,.-")
     // @NotBlank(message = "Please provide a street address")
     @Size(max = 80, message = "Please enter a street address between 1 and 80 characters")
     private String street1;
 
+    /**
+     * 街道地址2 所允许的特殊字符：@'/&#,.- ，长度为1-80
+     */
     @Pattern(regexp = "^[A-Za-z0-9 '/&#,.-]*$", message = "The only special characters allowed are: +@'/&#,.-")
     @Size(max = 80, message = "Please enter a street address 2 between 1 and 80 characters")
     private String street2;
 
+    /**
+     * 城市 所允许的特殊字符：@'/&#,.- ，长度为1-50
+     */
     @Pattern(regexp = "^[A-Za-z0-9 '/&#,.-]*$", message = "The only special characters allowed are: +@'/&#,.-")
     // @NotBlank(message = "Please provide a city")
     @Size(max = 50, message = "Please enter a city between 1 and 50 characters")
     private String city;
 
+    /**
+     * 州的两个字母缩写 只允许字母，长度2
+     */
     @Pattern(regexp = "^[A-Za-z]*$", message = "Only letters allowed for state")
     // @NotBlank(message = "Please provide a state")
     @Size(max = 2, message = "Please enter a two-letter abbreviation for the state")
     private String state;
 
+    /**
+     * 邮政编码 只允许数字、字母和破折号，长度15
+     */
     @Pattern(regexp = "^[A-Za-z0-9 -]*$", message = "Only numbers, letters, and dashes allowed for postal code")
     // @NotBlank(message = "Please provide a postal code")
     @Size(max = 15, message = "Please enter a postal code that does not exceed 15 characters")
     private String zip;
 
+    /**
+     * 邮箱地址  @Email邮箱格式，
+     */
     @NotBlank(message = "Please provide an email address")
     @Email(message = "Please provide a valid email address")
     private String email;
 
+    /**
+     * 手机号码 不超过15字符，
+     */
     @Pattern(regexp = "^[A-Za-z0-9 +()-]*$", message = "Please enter a valid phone number")
     @NotBlank(message = "Please provide a phone number")
     @Size(max = 15, message = "Please enter a phone number that does not exceed 15 characters")
     private String phoneNumber;
 
+    /**
+     * 邮箱地址  只允许数字 国家的两位数缩写
+     */
     @Pattern(regexp = "^[A-Za-z]*$", message = "Only letters allowed for country")
     // @NotBlank(message = "Please provide a country")
     @Size(max = 2, message = "Please enter a two-digit abbreviation for country")
     private String country;
 
+    /**
+     *时区  只允许字母、数字和斜线  不超过40字符
+     */
     @Pattern(regexp = "^[A-Za-z0-9 /]*$", message = "Only letters, numbers, and slashes allowed for timezone")
     @Size(max = 40, message = "Time zone cannot be more than 40 characters")
     private String timezone;
 
+    /**
+     * @JsonIgnore 的作用是“在实体类向前台返回数据时用来忽略不想传递给前台的属性或接口
+     * 密码
+     */
     @JsonIgnore
     private String password;
 
+    /**
+     * @JsonIgnore 的作用是“在实体类向前台返回数据时用来忽略不想传递给前台的属性或接口
+     * 谷歌api
+     */
     @JsonIgnore
     private GoogleApi googleApi;
 
+    /**
+     * 邮箱整合
+     */
     private EmailIntegration emailIntegration;
 
     public String getCountry() {
@@ -196,30 +240,50 @@ public class User extends BaseUser implements UserDetails {
         this.timezone = timezone;
     }
 
+    /**
+     * 账户是否过期
+     *
+     */
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * 账户锁定状态
+     *
+     */
     @Override
     @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    /**
+     * isCredentialsNonExpired方法返回值设为true，代表密码没有过期。
+     * isCredentialsNonExpired方法，但是返回了false，代表密码已经过期了。
+     *
+     */
     @Override
     @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * 是否禁用
+     *
+     */
     @Override
     @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
-
+    /**
+     * 授权列表
+     *
+     */
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

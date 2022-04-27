@@ -49,6 +49,7 @@ public class UserController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
+    //注入service
     @Autowired
     private UserService userService;
 
@@ -63,14 +64,25 @@ public class UserController {
     
     @Autowired
     private UserUtil userUtil;
-    
 
+
+    /**
+     * 例外处理程序
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<IRestResponse<Void>> userNotFound(UserNotFoundException ex) {
         return ResponseEntityUtil.createResponseEntityWithError(ex.getMessage(),
                 HttpStatus.NOT_FOUND.value());
     }
-    
+
+    /**
+     * 图形轮廓
+     * 前端get请求，携带json数据
+     * @param userId
+     * @return
+     */
     @GetMapping("/{userId}/profileImage")
     public ResponseEntity<ByteArrayResource> getProfileImage(@PathVariable String userId) {
         try { 
