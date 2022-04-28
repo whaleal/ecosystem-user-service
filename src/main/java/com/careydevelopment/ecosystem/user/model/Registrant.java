@@ -8,6 +8,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * 注册者
+ */
 public class Registrant {
 
     @NotNull

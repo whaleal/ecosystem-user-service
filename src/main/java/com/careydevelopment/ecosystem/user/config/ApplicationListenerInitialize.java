@@ -24,12 +24,13 @@ import com.careydevelopment.ecosystem.user.util.TotpUtil;
 
 import us.careydevelopment.ecosystem.jwt.constants.Authority;
 
+//实现应用监听接口
 @Component
 public class ApplicationListenerInitialize implements ApplicationListener<ApplicationReadyEvent>  {
 	
     private static final Logger LOG = LoggerFactory.getLogger(ApplicationListenerInitialize.class); 
 
-    
+    //自动注入
     @Autowired
     UserRepository userRepository;
 

@@ -6,9 +6,14 @@ import org.springframework.stereotype.Component;
 
 import com.careydevelopment.ecosystem.user.model.User;
 
+//元注解（可以注解其他注解的注解）
 @Component
 public class SessionUtil {
 
+    /**
+     *获取当前用户
+     * @return
+     */
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();

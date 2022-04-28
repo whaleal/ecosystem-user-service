@@ -16,7 +16,9 @@ import com.vonage.client.verify.VerifyStatus;
  * 
  * If we just send a text message and check the code like we do with email, we
  * get charged no matter what.
- * 
+ *
+ * 短信验证
+ *
  */
 @Service
 public class SmsService {
@@ -31,25 +33,42 @@ public class SmsService {
     @Value("${vonage.api.secret}")
     private String apiSecret;
 
+    /**
+     * 创建Vonage客户端
+     * @return
+     */
     private VonageClient getClient() {
         VonageClient client = VonageClient.builder().apiKey(apiKey).apiSecret(apiSecret).build();
 
         return client;
     }
 
+    /**
+     * 取消请求
+     * @param requestId
+     */
     public void cancelRequest(String requestId) {
         VonageClient client = getClient();
+        //获取验证客户端，之后取消验证
         client.getVerifyClient().cancelVerification(requestId);
         LOG.debug("Verification cancelled.");
     }
 
+    /**
+     * 发送验证消息给对应手机号
+     * @param phoneNumber
+     * @return
+     */
     public String sendValidationCode(String phoneNumber) {
         LOG.debug("Sending validation code to " + phoneNumber);
 
+        //获取Vonage
         VonageClient client = getClient();
 
+        //发送消息给手机号
         VerifyResponse response = client.getVerifyClient().verify(phoneNumber, BRAND_NAME);
 
+        //判断状态
         if (response.getStatus() == VerifyStatus.OK) {
             LOG.debug("Valid request: " + response.getRequestId());
             return response.getRequestId();
@@ -59,6 +78,12 @@ public class SmsService {
         }
     }
 
+    /**
+     * 检查验证码
+     * @param requestId
+     * @param code
+     * @return boolean
+     */
     public boolean checkValidationCode(String requestId, String code) {
         VonageClient client = getClient();
 

@@ -11,15 +11,21 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 配置服务器设置
+ */
 @Configuration
 public class ServerSetup {
 
+    //端口号
     @Value("${ajp.port}")
     int ajpPort;
 
+    //ajp状态
     @Value("${ajp.enabled}")
     boolean ajpEnabled;
 
+    //todo
     @Bean
     public Validator validator() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -28,6 +34,7 @@ public class ServerSetup {
         return validator;
     }
 
+    //todo
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();

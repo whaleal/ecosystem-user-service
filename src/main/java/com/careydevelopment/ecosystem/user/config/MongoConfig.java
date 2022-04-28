@@ -10,14 +10,19 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
+/**
+ * 配置mongo
+ */
 @Configuration
 @EnableCaching
 @EnableMongoRepositories(basePackages = { "com.careydevelopment.ecosystem.user.repository" })
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
+    //配置连接连接名
     @Value("${mongo.db.name}")
     private String ecosystemDb;
 
+    //配置连接字符
     @Value("${mongodb.carey-ecosystem.connection}")
     private String connectionString;
 

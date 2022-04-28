@@ -128,6 +128,9 @@ public class User extends BaseUser implements UserDetails {
      */
     private EmailIntegration emailIntegration;
 
+    /*
+     * 对应set，get 方法
+     */
     public String getCountry() {
         return country;
     }

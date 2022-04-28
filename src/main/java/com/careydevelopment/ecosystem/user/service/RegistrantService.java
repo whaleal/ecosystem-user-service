@@ -83,6 +83,7 @@ public class RegistrantService {
         LOG.debug("Failed attempts for " + auth.getUsername() + " is " + auth.getFailedAttempts());
 
         try {
+            //判断尝试次数，当小于5时
             if (auth.getFailedAttempts() < MAX_FAILED_ATTEMPTS) {
                 String requestId = auth.getRequestId();
                 verified = smsService.checkValidationCode(requestId, code);

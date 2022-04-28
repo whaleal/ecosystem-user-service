@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.careydevelopment.ecosystem.user.model.Hello;
 
+/**
+ * HelloWorld中央调度器
+ */
 @RestController
 @CrossOrigin
 public class HelloWorldController {

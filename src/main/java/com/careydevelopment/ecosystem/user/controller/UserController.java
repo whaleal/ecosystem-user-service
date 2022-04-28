@@ -78,16 +78,18 @@ public class UserController {
     }
 
     /**
-     * 图形轮廓
-     * 前端get请求，携带json数据
+     * 用户图片
+     * get请求，请求地址/{userId}/profileImage
      * @param userId
-     * @return
+     * @return ResponseEntity
      */
     @GetMapping("/{userId}/profileImage")
     public ResponseEntity<ByteArrayResource> getProfileImage(@PathVariable String userId) {
-        try { 
+        try {
+            //根据userId获取图片路径
             Path imagePath = fileUtil.fetchProfilePhotoByUserId(userId);
 
+            //判断路径是否为空，为显示未找到，不为空显示图片路径
             if (imagePath != null) {
                 LOG.debug("Getting image from " + imagePath.toString());
 
@@ -104,90 +106,144 @@ public class UserController {
         }
     }
 
+    /**
+     * 保存图片
+     * post请求，请求地址profileImage
+     * @param file
+     * @return ResponseEntity
+     */
     @PostMapping("/profileImage")
     public ResponseEntity<IRestResponse<Void>> saveProfileImage(@RequestParam("file") MultipartFile file) {
+        //获取当前登录用户
         User user = sessionUtil.getCurrentUser();
         LOG.debug("User uploading is " + user);
 
         //TODO: Use exception handler here
         try {
+            //对图片进行保存
             fileUtil.saveProfilePhoto(file, user);
 
             return ResponseEntityUtil.createSuccessfulResponseEntity("Profile image created successfully!", HttpStatus.CREATED.value());
         } catch (FileTooLargeException fe) {
+            //文件过大
             return ResponseEntityUtil.createResponseEntityWithError("File too large", HttpStatus.UNPROCESSABLE_ENTITY);
         } catch (MissingFileException me) {
+            //文件丢失
             return ResponseEntityUtil.createResponseEntityWithError("Missing file", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
+            //未知问题
             return ResponseEntityUtil.createResponseEntityWithError("Unexpected problem", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    /**
+     * 修改资源
+     * put请求，请求地址/userId
+     * @param userId  该参数使用@PathVariable注解，{userId}占位符可通过注解绑定到操作方法的参数中
+     * @param user
+     * @param bindingResult 绑定状态
+     * @return ResponseEntity
+     */
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable String userId, @Valid @RequestBody User user,
             BindingResult bindingResult) {
         
-        //ensure id in URL matches id in body
+        //ensure id in URL matches id in body 确保URL中的id与正文中的id匹配
         user.setId(userId);
+        //日志
         LOG.debug("updated user data is " + user);        
 
+        //验证用户
         userUtil.validateUserUpdate(user, bindingResult);
-        
+        //todo
         InputSanitizer.sanitizeBasic(user);
 
+        //更新操作
         User updatedUser = userService.updateUser(user);
         LOG.debug("updated user is " + updatedUser);
 
         return ResponseEntityUtil.createSuccessfulResponseEntity("User updated successfully", HttpStatus.OK.value(), updatedUser);    
     }
 
+    /**
+     * 删除资源
+     * delete请求，请求地址/userId
+     * @param userId
+     * @return ResponseEntity
+     */
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable String userId) {
         LOG.debug("deleting user " + userId);
+        //根据id获取删除用户
         User user = userUtil.validateUserDelete(userId);
-        
+
+        //删除操作
         userRepository.delete(user);
-        
+        //返回删除成功信息
         return ResponseEntityUtil.createSuccessfulResponseEntity("User successfully deleted", HttpStatus.NO_CONTENT.value());
     }
-    
+
+    /**
+     *
+     * @return ResponseEntity
+     */
     @GetMapping("/me")
     public ResponseEntity<?> me() {
         try {
+            //获取当前用户
             User user = sessionUtil.getCurrentUser();
             return ResponseEntityUtil.createSuccessfulResponseEntity("User successfully retrieved", HttpStatus.OK.value(), user);
         } catch (Exception e) {
+            //检索当前用户时出现问题,异常信息写入日志
             LOG.error("Problem retrieving current user!", e);
             
-            //intentionally vague here for security reasons
+            //intentionally vague here for security reasons   出于安全考虑，这里故意含糊其辞
             return ResponseEntityUtil.createResponseEntityWithError("User not found", HttpStatus.NOT_FOUND.value());
         }
     }
 
+    /**
+     * 退出
+     * @param jwtToken
+     * @param response
+     * @return ResponseEntity
+     */
     @DeleteMapping("/session")
     public ResponseEntity<?> logout(
             @CookieValue(name = CookieConstants.ACCESS_TOKEN_COOKIE_NAME, required = false) String jwtToken,
             HttpServletResponse response) {
 
+        //如果token不为空将cookie失效
         if (jwtToken != null) {
             CookieUtil.expireCookie(CookieConstants.ACCESS_TOKEN_COOKIE_NAME, response);
         }
 
+        //返回成功退出信息
         return ResponseEntityUtil.createSuccessfulResponseEntity("User successfully logged out", HttpStatus.OK.value());
     }
 
+    /**
+     * 查询
+     * @param emailAddress
+     * @param username
+     * @return ResponseEntity
+     */
     @GetMapping("/simpleSearch")
     public ResponseEntity<?> search(@RequestParam(required = false) String emailAddress,
             @RequestParam(required = false) String username) {
+        //创建搜索标准封装，将搜索条件添加
         UserSearchCriteria searchCriteria = new UserSearchCriteria();
         searchCriteria.setEmailAddress(emailAddress);
         searchCriteria.setUsername(username);
 
+        //日志输出搜索标准
         LOG.debug("Search criteria is " + searchCriteria);
 
+        //搜索操作
         List<User> users = userService.search(searchCriteria);
         LOG.debug("Returning users " + users);
-        
+
+        //返回搜索信息
         return ResponseEntityUtil.createSuccessfulResponseEntity("Successful query", HttpStatus.OK.value(), users);
     }
 }

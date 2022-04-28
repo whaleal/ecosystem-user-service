@@ -17,6 +17,9 @@ import us.careydevelopment.ecosystem.jwt.config.CredentialsAndJwtSecurityConfig;
 import us.careydevelopment.ecosystem.jwt.constants.Authority;
 import us.careydevelopment.ecosystem.jwt.util.RecaptchaUtil;
 
+/**
+ * todo
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends CredentialsAndJwtSecurityConfig {

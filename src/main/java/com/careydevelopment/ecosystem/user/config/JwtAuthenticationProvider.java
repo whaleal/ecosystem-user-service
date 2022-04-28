@@ -10,6 +10,9 @@ import com.careydevelopment.ecosystem.user.util.JwtUtil;
 import us.careydevelopment.ecosystem.jwt.config.CredentialsAndJwtAuthenticationProvider;
 import us.careydevelopment.ecosystem.jwt.service.JwtUserDetailsService;
 
+/**
+ * todo
+ */
 @Component
 public class JwtAuthenticationProvider extends CredentialsAndJwtAuthenticationProvider {
 
