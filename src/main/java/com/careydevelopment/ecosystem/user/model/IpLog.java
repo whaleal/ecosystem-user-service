@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import us.careydevelopment.ecosystem.jwt.model.BaseIpLog;
 
+/**
+ * ip日志，继承BaseIpLog
+ */
 @Document(collection = "#{@environment.getProperty('mongo.iplog.collection')}")
 public class IpLog extends BaseIpLog {
 
@@ -24,6 +27,7 @@ public class IpLog extends BaseIpLog {
         return ReflectionToStringBuilder.toString(this);
     }
 
+    //重写hashCode
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -33,6 +37,7 @@ public class IpLog extends BaseIpLog {
         return result;
     }
 
+    //重写equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

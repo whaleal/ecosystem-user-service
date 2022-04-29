@@ -300,6 +300,7 @@ public class User extends BaseUser implements UserDetails {
         return ReflectionToStringBuilder.toString(this);
     }
 
+    //重写hashCode
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -309,6 +310,7 @@ public class User extends BaseUser implements UserDetails {
         return result;
     }
 
+    //重写equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import com.careydevelopment.ecosystem.user.model.User;
 
+/**
+ * session工具类
+ */
 //元注解（可以注解其他注解的注解）
 @Component
 public class SessionUtil {

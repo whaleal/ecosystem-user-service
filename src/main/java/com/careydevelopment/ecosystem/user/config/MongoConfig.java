@@ -31,6 +31,10 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return ecosystemDb;
     }
 
+    /**
+     * 重写mongoClient
+     * @return MongoClient
+     */
     @Override
     @Bean
     public MongoClient mongoClient() {

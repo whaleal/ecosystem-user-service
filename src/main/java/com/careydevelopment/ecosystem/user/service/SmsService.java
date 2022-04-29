@@ -85,6 +85,7 @@ public class SmsService {
      * @return boolean
      */
     public boolean checkValidationCode(String requestId, String code) {
+        //获取客户端
         VonageClient client = getClient();
 
         CheckResponse response = client.getVerifyClient().check(requestId, code);

@@ -153,7 +153,7 @@ public class RegistrationController {
         //保存操作
         User savedUser = registrantService.saveUser(registrant);
 
-        //给创建的用户添加emailode
+        //给创建的用户添加emailCode
         registrantService.createEmailCode(registrant);
 
         return ResponseEntityUtil.createSuccessfulResponseEntity("Successfully registered!", HttpStatus.CREATED.value(),

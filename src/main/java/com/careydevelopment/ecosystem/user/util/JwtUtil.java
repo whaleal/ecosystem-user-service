@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import us.careydevelopment.ecosystem.jwt.util.JwtTokenUtil;
 
+/**
+ * jwt工具类
+ */
 @Component
 public class JwtUtil extends JwtTokenUtil {
 

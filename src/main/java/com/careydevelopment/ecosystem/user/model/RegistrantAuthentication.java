@@ -4,9 +4,13 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * 注册认证
+ */
 @Document(collection = "#{@environment.getProperty('mongo.registrant-authentication.collection')}")
 public class RegistrantAuthentication {
 
+    //枚举类型  email  或 text文本
     public enum Type {
         EMAIL, TEXT
     };
@@ -14,15 +18,19 @@ public class RegistrantAuthentication {
     @Id
     private String id;
 
+    //用户名
     private String username;
+    //注册时间
     private Long time;
+    //注册方式
     private Type type;
+    //失败次数
     private Integer failedAttempts = 0;
 
-    // used for email
+    // used for email  用于email
     private String code;
 
-    // used for SMS
+    // used for SMS   用于短讯服务
     private String requestId;
 
     public String getUsername() {
@@ -81,6 +89,7 @@ public class RegistrantAuthentication {
         this.id = id;
     }
 
+    //重写hashCode
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -89,6 +98,7 @@ public class RegistrantAuthentication {
         return result;
     }
 
+    //重写equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

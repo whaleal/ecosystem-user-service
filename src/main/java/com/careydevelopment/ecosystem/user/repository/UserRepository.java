@@ -8,15 +8,15 @@ import com.careydevelopment.ecosystem.user.model.User;
 import us.careydevelopment.ecosystem.jwt.repository.UserDetailsRepository;
 
 /**
- * 继承MongoRepository
- * 方法有根据用户名查询，根据email查询
- *
+ * 用户操作接口
  */
 @Repository
 public interface UserRepository extends MongoRepository<User, String>, UserDetailsRepository {
 
+    //根据用户名查询
     public User findByUsername(String username);
 
+    //根据email查询
     public User findByEmail(String email);
 
 }

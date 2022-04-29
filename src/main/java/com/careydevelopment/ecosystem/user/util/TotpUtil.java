@@ -9,11 +9,15 @@ import org.springframework.stereotype.Component;
 
 import de.taimos.totp.TOTP;
 
+/**
+ * 顶级工具
+ */
 @Component
 public class TotpUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(TotpUtil.class);
 
+    //秘钥
     @Value("${tfa.secret.key}")
     private String secretKey;
 

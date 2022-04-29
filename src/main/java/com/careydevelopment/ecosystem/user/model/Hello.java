@@ -2,6 +2,9 @@ package com.careydevelopment.ecosystem.user.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+/*
+    hello world
+ */
 public class Hello {
 
     private String hello = "world";

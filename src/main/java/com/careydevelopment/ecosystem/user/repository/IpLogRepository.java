@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.careydevelopment.ecosystem.user.model.IpLog;
 
+/**
+ * Ip日志存储接口
+ */
 @Repository
 public interface IpLogRepository extends MongoRepository<IpLog, String> {
 
